@@ -1,8 +1,14 @@
 {
   "compilerOptions": {
+    "rootDir": "./src",
+    "noEmit": false,
+    "removeComments": true,
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "outDir": "./dist"
   }
 }
