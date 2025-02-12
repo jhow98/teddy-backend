@@ -1,12 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ClienteRepository } from '../repositories/cliente.repository';
 import { Cliente } from '../entities/cliente.entity';
+import { CreateClienteDto } from '../dto/create-cliente.dto';
 
 @Injectable()
 export class ClienteService {
   constructor(private readonly clienteRepo: ClienteRepository) {}
 
-  async criar(cliente: Cliente): Promise<Cliente> {
+  async criar(createClienteDto: CreateClienteDto): Promise<Cliente> {
+    const cliente = new Cliente();
+    cliente.nome = createClienteDto.nome;
+    cliente.salario = createClienteDto.salario;
+    cliente.valorEmpresa = createClienteDto.valorEmpresa;
+
     return await this.clienteRepo.criar(cliente);
   }
 

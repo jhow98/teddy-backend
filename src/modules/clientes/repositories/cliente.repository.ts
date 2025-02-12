@@ -11,7 +11,8 @@ export class ClienteRepository {
   ) {}
 
   async criar(cliente: Cliente): Promise<Cliente> {
-    return await this.clienteRepo.save(cliente);
+    const novoCliente = this.clienteRepo.create(cliente);
+    return await this.clienteRepo.save(novoCliente);
   }
 
   async buscarTodos(pagina: number, limite: number): Promise<Cliente[]> {
