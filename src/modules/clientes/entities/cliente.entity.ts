@@ -5,7 +5,7 @@ export class Cliente {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 100 })
+  @Column({ type: 'varchar', length: 100 })
   nome: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
