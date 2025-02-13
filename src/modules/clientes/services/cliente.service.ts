@@ -3,12 +3,14 @@ import { ClienteRepository } from '../repositories/cliente.repository';
 import { Cliente } from '../entities/cliente.entity';
 import { CreateClienteDto } from '../dto/create-cliente.dto';
 import { MessagingService } from '../../../messaging/messaging.service';
+import { MetricsService } from '../../../common/metrics/metrics.service';
 
 @Injectable()
 export class ClienteService {
   constructor(
     private readonly clienteRepo: ClienteRepository,
     private readonly messagingService: MessagingService,
+    private readonly metricsService: MetricsService, // Injetando métricas
   ) {}
   async criar(createClienteDto: CreateClienteDto): Promise<Cliente> {
     const cliente = new Cliente();
@@ -17,9 +19,9 @@ export class ClienteService {
     cliente.valorEmpresa = createClienteDto.valorEmpresa;
 
     const novoCliente = await this.clienteRepo.criar(cliente);
+    this.metricsService.incrementarClientesCriados(); // Atualiza a métrica
     await this.messagingService.enviarMensagem('novoCliente', novoCliente);
     return novoCliente;
-
 
   }
 

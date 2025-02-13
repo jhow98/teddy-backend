@@ -2,31 +2,43 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MyLoggerService } from './common/logger/logger.service';
+import { PrometheusController } from '@willsoto/nestjs-prometheus';
+import { Logger } from '@nestjs/common';
 
 ConfigModule.forRoot();
 
 const configService = new ConfigService();
-console.log('🔍 Banco de Dados Configuração:');
-console.log('DB_HOST:', configService.get('DB_HOST'));
-console.log('DB_PORT:', configService.get('DB_PORT'));
-console.log('DB_USER:', configService.get('DB_USER'));
-console.log('DB_PASS:', configService.get('DB_PASS'));
-console.log('DB_NAME:', configService.get('DB_NAME'));
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['log', 'error', 'warn', 'debug'],
+    });
+
+
 
   // Configuração do Swagger
   const config = new DocumentBuilder()
     .setTitle('API de Clientes')
     .setDescription('Documentação da API do painel administrativo')
     .setVersion('1.0')
-    .addTag('clientes') // Adiciona tags para organização dos endpoints
+    .addTag('clientes')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  await app.listen(3000);
+  
+  // Expor métricas na URL /metrics
+  app.enableCors();
+  app.enableShutdownHooks();
+
+  try {
+    await app.listen(3000);
+    Logger.log(`🚀 API rodando em http://localhost:3000`);
+    Logger.log(`📊 Métricas disponíveis em http://localhost:3000/metrics`);
+  } catch (error) {
+    Logger.error('Erro ao iniciar a aplicação:', error);
+  }
 }
 bootstrap();

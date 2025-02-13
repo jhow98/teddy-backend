@@ -22,7 +22,7 @@ ConfigModule.forRoot();
     }),
   ],
   providers: [MessagingService, MessagingProcessor],
-  exports: [MessagingService],
+  exports: [MessagingService, BullModule],
   
 })
 export class MessagingModule {}
