@@ -2,18 +2,25 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ClienteRepository } from '../repositories/cliente.repository';
 import { Cliente } from '../entities/cliente.entity';
 import { CreateClienteDto } from '../dto/create-cliente.dto';
+import { MessagingService } from '../../../messaging/messaging.service';
 
 @Injectable()
 export class ClienteService {
-  constructor(private readonly clienteRepo: ClienteRepository) {}
-
+  constructor(
+    private readonly clienteRepo: ClienteRepository,
+    private readonly messagingService: MessagingService,
+  ) {}
   async criar(createClienteDto: CreateClienteDto): Promise<Cliente> {
     const cliente = new Cliente();
     cliente.nome = createClienteDto.nome;
     cliente.salario = createClienteDto.salario;
     cliente.valorEmpresa = createClienteDto.valorEmpresa;
 
-    return await this.clienteRepo.criar(cliente);
+    const novoCliente = await this.clienteRepo.criar(cliente);
+    await this.messagingService.enviarMensagem('novoCliente', novoCliente);
+    return novoCliente;
+
+
   }
 
   async buscarTodos(pagina = 1, limite = 16) {
@@ -30,13 +37,17 @@ export class ClienteService {
     return cliente;
   }
 
-  async atualizar(id: number, cliente: Partial<Cliente>): Promise<void> {
+  async atualizar(id: number, cliente: Partial<Cliente>): Promise<Cliente> {
     await this.buscarPorId(id);
     await this.clienteRepo.atualizar(id, cliente);
+    return { id, ...cliente } as Cliente;
   }
+  
 
-  async deletar(id: number): Promise<void> {
+  async deletar(id: number): Promise<boolean> {
     await this.buscarPorId(id);
     await this.clienteRepo.deletar(id);
+    return true;
   }
+  
 }
