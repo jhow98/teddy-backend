@@ -1,152 +1,119 @@
-# 📌 Projeto Backend - NestJS
+# 📌 Projeto Backend - Arquitetura e Documentação
 
-## 📖 Visão Geral
-Este projeto é uma API desenvolvida utilizando o framework **NestJS** com **TypeScript**, seguindo uma arquitetura modular baseada no **Clean Architecture**. Ele implementa serviços de mensageria com **BullMQ** e um banco de dados utilizando **TypeORM**.
+Este repositório contém o backend de um sistema desenvolvido com NestJS e TypeScript, seguindo princípios de arquitetura limpa. Ele inclui integração com um banco de dados relacional e um serviço de mensageria para processamento assíncrono.
 
 ## 📂 Estrutura de Pastas
-```
-📦 src
- ┣ 📂 modules
- ┃ ┣ 📂 clientes
- ┃ ┃ ┣ 📜 cliente.module.ts
- ┃ ┃ ┣ 📜 cliente.service.ts
- ┃ ┃ ┣ 📜 cliente.controller.ts
- ┃ ┃ ┣ 📜 cliente.repository.ts
- ┃ ┃ ┗ 📜 dtos
- ┃ ┣ 📂 messaging
- ┃ ┃ ┣ 📜 messaging.module.ts
- ┃ ┃ ┣ 📜 messaging.service.ts
- ┃ ┃ ┣ 📜 messaging.processor.ts
- ┃ ┃ ┗ 📜 messaging.controller.ts
- ┣ 📜 main.ts
- ┣ 📜 app.module.ts
- ┗ 📜 config.ts
-```
 
----
+```
+📦 projeto-backend
+ ┣ 📂 src
+ ┃ ┣ 📂 modules
+ ┃ ┃ ┣ 📂 clientes
+ ┃ ┃ ┃ ┣ 📜 clientes.module.ts
+ ┃ ┃ ┃ ┣ 📜 clientes.service.ts
+ ┃ ┃ ┃ ┣ 📜 clientes.controller.ts
+ ┃ ┃ ┃ ┣ 📜 clientes.repository.ts
+ ┃ ┃ ┣ 📂 messaging
+ ┃ ┃ ┃ ┣ 📜 messaging.module.ts
+ ┃ ┃ ┃ ┣ 📜 messaging.service.ts
+ ┃ ┃ ┃ ┣ 📜 messaging.processor.ts
+ ┃ ┣ 📂 config
+ ┃ ┣ 📂 common
+ ┃ ┣ 📜 main.ts
+ ┣ 📜 .eslintrc.js
+ ┣ 📜 package.json
+ ┣ 📜 README.md
+```
 
 ## 🚀 Tecnologias Utilizadas
 
-- **Node.js**
-- **NestJS**
+- **Node.js** (v18+)
+- **NestJS** (v9+)
 - **TypeScript**
 - **TypeORM**
-- **PostgreSQL**
-- **BullMQ**
-- **Redis**
-- **Jest** (Testes automatizados)
-- **ESLint & Prettier** (Padrão de código)
-- **Swagger** (Documentação da API)
+- **Banco de Dados PostgreSQL**
+- **Mensageria Upstash**
+- **Swagger para documentação da API**
 
----
+## 🔧 Instalação e Configuração
 
-## 📌 Instalação
-
-### 1️⃣ Clonar o repositório
+### 1️⃣ Clonar o Repositório
 ```sh
-git clone https://github.com/seu-usuario/nome-do-repositorio.git
-cd nome-do-repositorio
+git clone https://dev.azure.com/jhonatanlopes98/Teddy
+cd projeto-backend
 ```
 
-### 2️⃣ Instalar as dependências
+### 2️⃣ Instalar Dependências
 ```sh
 npm install
 ```
 
-### 3️⃣ Configurar variáveis de ambiente
-Copie o arquivo `.env.example` e renomeie para `.env`, preenchendo os valores corretamente.
+### 3️⃣ Configurar o Banco de Dados
+Utilizamos PostgreSQL. Configure o `.env` com os dados corretos:
 ```sh
-cp .env.example .env
+DATABASE_URL=postgres://user:password@host:port/dbname
 ```
 
-### 4️⃣ Rodar a aplicação
+### 4️⃣ Configurar o Serviço de Mensageria
+Utilizamos Upstash para a mensageria assíncrona. Configure o `.env` com:
 ```sh
-npm run start:dev
+UPSTASH_REDIS_URL=redis://default:password@host:port
 ```
 
----
-
-## 🛢️ Banco de Dados
-
-Utilizamos **PostgreSQL** como banco de dados.
-
-📌 **Acesso ao banco:**
-- Serviço: [Railway.app](https://railway.app/)
-- Conexão: **postgres://username:password@host:port/database**
-
-### 📌 Rodando as Migrations
+### 5️⃣ Rodar as Migrações do Banco
 ```sh
 npm run migration:run
 ```
 
----
-
-## 📩 Serviço de Mensageria
-
-A mensageria é feita com **BullMQ** e **Redis**.
-
-📌 **Acesso ao Redis:**
-- Serviço: [Upstash](https://upstash.com/)
-- URL: `redis://your_upstash_url`
-
-Para monitoramento das filas, utilize **Bull Board**:
+### 6️⃣ Iniciar o Servidor
 ```sh
-npm run bull-board
+npm run start:dev
 ```
-Acesse: `http://localhost:3000/admin/queues`
-
----
 
 ## 📑 Documentação da API
+A documentação da API pode ser acessada pelo Swagger:
+```
+http://localhost:3000/api/docs
+```
 
-A documentação da API é gerada automaticamente pelo **Swagger**.
-
-📌 **Acesse:** [Swagger UI](http://localhost:3000/api)
-
----
-
-## ✅ Testes Automatizados
-
-Os testes são feitos com **Jest**.
-
-### Rodar todos os testes:
+## ✅ Rodando os Testes
+Para rodar os testes unitários:
 ```sh
 npm test
 ```
 
-### Rodar testes com cobertura de código:
+Para rodar os testes com coverage:
 ```sh
 npm run test:cov
 ```
 
----
+## 📌 Padrão de Commit e Pull Request
 
-## 📌 Padrão de Commits e Pull Requests
-
-Este projeto segue o **Guia do Commit Amigão**.
-
-📌 **Exemplo de commit:**
+Utilizamos o **Guia do Commit Amigão**. Exemplos de commits:
 ```sh
-git commit -m "feat(clientes): adiciona validação ao criar cliente"
+feat(clientes): adiciona endpoint para criação de clientes
+fix(messaging): corrige envio de mensagens duplicadas
 ```
 
-📌 **Padrão de Pull Request:**
-- Descreva de forma clara as mudanças realizadas.
-- Relacione a PR com uma issue (se aplicável).
-- Inclua evidências de testes e funcionamento.
+### Template de Pull Request
+```
+## O que foi feito?
+
+## Como testar?
+
+## Checklist
+- [ ] Código testado manualmente
+- [ ] Testes automatizados passaram
+- [ ] Documentação atualizada (se necessário)
+```
 
 ---
 
-## 🔥 Desenvolvimento de Painel Administrativo
+## 📊 Desenvolvimento de um Painel Administrativo
+Caso seja necessário desenvolver um painel administrativo para este sistema, seguem as estimativas:
 
-Caso seja necessário desenvolver um painel administrativo para este sistema, estima-se:
+1. **Tempo Estimado:** 3 a 4 meses
+2. **Quantidade de Desenvolvedores:** 2 a 3
+3. **Senioridade:** 1 pleno, 1 sênior e, se possível, 1 júnior para suporte
 
-📌 **Tempo:** 2 a 3 meses
-📌 **Equipe:** 3 desenvolvedores
-📌 **Senioridade:** 1 pleno, 1 sênior e 1 júnior
-
-O tempo e equipe podem variar conforme o escopo detalhado e requisitos adicionais.
-
----
-
-📌 **Dúvidas?** Abra uma issue no repositório! 😊
+Isso pode variar conforme o escopo exato do projeto, mas essa seria uma estimativa inicial baseada na complexidade do sistema atual. 🚀
