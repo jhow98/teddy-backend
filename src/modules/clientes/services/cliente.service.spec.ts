@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ClienteService } from './cliente.service';
 import { ClienteRepository } from '../repositories/cliente.repository';
 import { MessagingService } from '../../../messaging/messaging.service';
+import { MetricsService } from '../../../common/metrics/metrics.service';
 
 describe('ClienteService', () => {
   let service: ClienteService;
@@ -14,6 +15,10 @@ describe('ClienteService', () => {
     deletar: jest.Mock;
   };
   let messagingService: { enviarMensagem: jest.Mock };
+  
+  const mockMetricsService = {
+    incrementarClientesCriados: jest.fn(),
+  };
 
   beforeEach(async () => {
     clienteRepo = {
@@ -34,6 +39,7 @@ describe('ClienteService', () => {
         ClienteService,
         { provide: ClienteRepository, useValue: clienteRepo },
         { provide: MessagingService, useValue: messagingService },
+        { provide: MetricsService, useValue: mockMetricsService },
       ],
     }).compile();
 

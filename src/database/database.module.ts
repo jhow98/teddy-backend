@@ -5,12 +5,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 ConfigModule.forRoot();
 
 const configService = new ConfigService();
-console.log('🔍 Banco de Dados Configuração:');
-console.log('DB_HOST:', configService.get('DB_HOST'));
-console.log('DB_PORT:', configService.get('DB_PORT'));
-console.log('DB_USER:', configService.get('DB_USER'));
-console.log('DB_PASS:', configService.get('DB_PASS'));
-console.log('DB_NAME:', configService.get('DB_NAME'));
 @Module({
   imports: [
     TypeOrmModule.forRoot({

@@ -1,6 +1,6 @@
 # 📌 Projeto Backend - Arquitetura e Documentação
 
-Este repositório contém o backend de um sistema desenvolvido com NestJS e TypeScript, seguindo princípios de arquitetura limpa. Ele inclui integração com um banco de dados relacional e um serviço de mensageria para processamento assíncrono.
+Este repositório contém o backend de um sistema desenvolvido com NestJS e TypeScript, seguindo princípios de arquitetura limpa. Ele inclui integração com um banco de dados relacional, um serviço de mensageria para processamento assíncrono e um módulo de **observabilidade**, garantindo **monitoramento de métricas e logs**.
 
 ## 📂 Estrutura de Pastas
 
@@ -13,12 +13,20 @@ Este repositório contém o backend de um sistema desenvolvido com NestJS e Type
  ┃ ┃ ┃ ┣ 📜 clientes.service.ts
  ┃ ┃ ┃ ┣ 📜 clientes.controller.ts
  ┃ ┃ ┃ ┣ 📜 clientes.repository.ts
+ ┃ ┃ ┃ ┣ 📂 tests
+ ┃ ┃ ┃ ┃ ┣ 📜 clientes.service.spec.ts
+ ┃ ┃ ┃ ┃ ┣ 📜 clientes.controller.spec.ts
  ┃ ┃ ┣ 📂 messaging
  ┃ ┃ ┃ ┣ 📜 messaging.module.ts
  ┃ ┃ ┃ ┣ 📜 messaging.service.ts
  ┃ ┃ ┃ ┣ 📜 messaging.processor.ts
  ┃ ┣ 📂 config
  ┃ ┣ 📂 common
+ ┃ ┃ ┣ 📂 logger
+ ┃ ┃ ┃ ┣ 📜 logger.service.ts
+ ┃ ┃ ┣ 📂 metrics
+ ┃ ┃ ┃ ┣ 📜 metrics.module.ts
+ ┃ ┃ ┃ ┣ 📜 metrics.service.ts
  ┃ ┣ 📜 main.ts
  ┣ 📜 .eslintrc.js
  ┣ 📜 package.json
@@ -32,15 +40,15 @@ Este repositório contém o backend de um sistema desenvolvido com NestJS e Type
 - **TypeScript**
 - **TypeORM**
 - **Banco de Dados PostgreSQL**
-- **Mensageria Upstash**
+- **Mensageria Upstash (Redis)**
 - **Swagger para documentação da API**
+- **Observabilidade (Prometheus, Winston)**
 
 ## 🔧 Instalação e Configuração
 
 ### 1️⃣ Clonar o Repositório
 ```sh
 git clone https://dev.azure.com/jhonatanlopes98/Teddy
-cd projeto-backend
 ```
 
 ### 2️⃣ Instalar Dependências
@@ -48,24 +56,7 @@ cd projeto-backend
 npm install
 ```
 
-### 3️⃣ Configurar o Banco de Dados
-Utilizamos PostgreSQL. Configure o `.env` com os dados corretos:
-```sh
-DATABASE_URL=postgres://user:password@host:port/dbname
-```
-
-### 4️⃣ Configurar o Serviço de Mensageria
-Utilizamos Upstash para a mensageria assíncrona. Configure o `.env` com:
-```sh
-UPSTASH_REDIS_URL=redis://default:password@host:port
-```
-
-### 5️⃣ Rodar as Migrações do Banco
-```sh
-npm run migration:run
-```
-
-### 6️⃣ Iniciar o Servidor
+### 3️⃣ Iniciar o Servidor
 ```sh
 npm run start:dev
 ```
@@ -86,6 +77,43 @@ Para rodar os testes com coverage:
 ```sh
 npm run test:cov
 ```
+
+## 📊 Observabilidade e Monitoramento
+
+Este projeto implementa **observabilidade** com **monitoramento de métricas e logs**.
+
+### 🔹 Logs estruturados
+Utilizamos **Winston** para capturar logs estruturados e armazená-los localmente.
+
+- Os logs são gravados na pasta `logs/`
+- Níveis de log: `info`, `warn`, `error`, `debug`
+
+### 🔹 Métricas com Prometheus
+Utilizamos **Prometheus** para expor métricas no endpoint `/metrics`.
+
+- **Métricas padrão** (CPU, memória, event loop)
+- **Métrica personalizada**: `clientes_criados_total` (quantidade de clientes criados)
+
+#### 📌 Como acessar as métricas
+
+1. **Iniciar o servidor**
+   ```sh
+   npm run start
+   ```
+
+2. **Acessar as métricas no navegador ou via `curl`**
+   ```sh
+   curl http://localhost:3000/metrics
+   ```
+
+3. **Exemplo de saída**
+   ```txt
+   # HELP clientes_criados_total Número total de clientes criados
+   # TYPE clientes_criados_total counter
+   clientes_criados_total 5
+   ```
+
+---
 
 ## 📌 Padrão de Commit e Pull Request
 
