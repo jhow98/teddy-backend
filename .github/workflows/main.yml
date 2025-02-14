@@ -8,10 +8,24 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    container: ghcr.io/railwayapp/cli:latest
+    container: ghcr.io/railwayapp/cli:latest  # Usa o Railway CLI oficial
+
     env:
-      SVC_ID: my-service-id
+      SVC_ID: ${{ secrets.SVC_ID }}  # Substitua pelo ID do serviço no Railway
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
     steps:
-      - uses: actions/checkout@v3
-      - run: railway up --service=my-service-id -- --token=${{ secrets.RAILWAY_TOKEN }}
+      - name: Debug Token
+        run: |
+          if [ -z "${{ secrets.RAILWAY_TOKEN }}" ]; then
+            echo "🚨 RAILWAY_TOKEN não foi carregado!"
+            exit 1
+          else
+            echo "✅ RAILWAY_TOKEN está carregado corretamente!"
+          fi
+          
+      - name: Checkout do Código
+        uses: actions/checkout@v3
+
+      - name: Fazer deploy para Railway
+        run: railway up --service=${{ env.SVC_ID }}
