@@ -8,15 +8,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    container: ghcr.io/railwayapp/cli:latest  # Usa o Railway CLI oficial
-
+    container: ghcr.io/railwayapp/cli:latest
     env:
-      SVC_ID: meu-service-id  # Substitua pelo ID do serviço no Railway
+      SVC_ID: my-service-id
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-
     steps:
-      - name: Checkout do Código
-        uses: actions/checkout@v3
-
-      - name: Fazer deploy para Railway
-        run: railway up --service=${{ env.SVC_ID }}
+      - uses: actions/checkout@v3
+      - run: railway up --service=${{ env.SVC_ID }}
