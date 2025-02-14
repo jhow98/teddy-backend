@@ -3,7 +3,7 @@ name: Deploy no Railway
 on:
   push:
     branches:
-      - develop  # Ou 'main' se quiser deploy direto na main
+      - develop
 
 jobs:
   deploy:
@@ -13,12 +13,26 @@ jobs:
       - name: Checkout do Código
         uses: actions/checkout@v2
 
+      - name: Instalar Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Instalar Dependências
+        run: npm install
+
+      - name: Rodar os Testes
+        run: npm test
+
+      - name: Build da Aplicação
+        run: npm run build
+
       - name: Instalar CLI do Railway
         run: |
           curl -fsSL https://railway.app/install.sh | sh
 
-      - name: Fazer login no Railway
-        run: railway login --token ${{ secrets.RAILWAY_TOKEN }}
+      - name: Configurar Token do Railway
+        run: echo "RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}" >> $GITHUB_ENV
 
       - name: Fazer deploy para Railway
         run: railway up
