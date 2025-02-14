@@ -32,9 +32,10 @@ jobs:
           curl -fsSL https://railway.app/install.sh | sh
 
       - name: Verificar se o Token foi Carregado
-        run: echo "Token Length: $(echo -n $RAILWAY_TOKEN | wc -c)"
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          echo "Token Length: $(echo -n $RAILWAY_TOKEN | wc -c)"
 
       - name: Fazer deploy para Railway
         env:
