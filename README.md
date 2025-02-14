@@ -165,4 +165,4 @@ Caso seja necessário desenvolver um painel administrativo para este sistema, se
 2. **Quantidade de Desenvolvedores:** 2 a 3
 3. **Senioridade:** 1 pleno, 1 sênior e, se possível, 1 júnior para suporte
 
-Isso pode variar conforme o escopo exato do projeto, mas essa seria uma estimativa inicial baseada na complexidade do sistema atual. 🚀
+Isso pode variar conforme o escopo exato do projeto, mas essa seria uma estimativa inicial baseada na complexidade do sistema atual.
