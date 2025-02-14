@@ -31,8 +31,7 @@ jobs:
         run: |
           curl -fsSL https://railway.app/install.sh | sh
 
-      - name: Configurar Token do Railway
-        run: echo "${{ secrets.RAILWAY_TOKEN }}" | railway login
-
       - name: Fazer deploy para Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: railway up --service meu-app
