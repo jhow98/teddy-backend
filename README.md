@@ -33,6 +33,7 @@ Este repositório contém o backend de um sistema desenvolvido com NestJS e Type
  ┣ 📜 README.md
 ```
 
+
 ## 🚀 Tecnologias Utilizadas
 
 - **Node.js** (v18+)
@@ -41,8 +42,9 @@ Este repositório contém o backend de um sistema desenvolvido com NestJS e Type
 - **TypeORM**
 - **Banco de Dados PostgreSQL**
 - **Mensageria Upstash (Redis)**
+- **BullMQ para filas**
 - **Swagger para documentação da API**
-- **Observabilidade (Prometheus, Winston)**
+- **Observabilidade (Prometheus, Winston, Bull Board)**
 
 ## 🔧 Instalação e Configuração
 
@@ -112,6 +114,25 @@ Utilizamos **Prometheus** para expor métricas no endpoint `/metrics`.
    # TYPE clientes_criados_total counter
    clientes_criados_total 5
    ```
+
+---
+
+### 🔹 Monitoramento de Filas (BullMQ)
+Este projeto utiliza BullMQ para gerenciar filas de mensagens de forma eficiente.
+
+#### 📌 Como acessar o Bull Board (monitoramento das filas)
+
+1. **Iniciar o servidor**
+   ```sh
+   npm run start
+   ```
+
+2. **Acessar as métricas no navegador ou via `curl`**
+   ```
+   http://localhost:3000/bull-board/queue/clientesQueue
+   ```
+   
+   No painel, você pode visualizar tarefas pendentes, em andamento e concluídas.
 
 ---
 
