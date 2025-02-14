@@ -1,0 +1,24 @@
+name: Deploy no Railway
+
+on:
+  push:
+    branches:
+      - develop  # Ou 'main' se quiser deploy direto na main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v2
+
+      - name: Instalar CLI do Railway
+        run: |
+          curl -fsSL https://railway.app/install.sh | sh
+
+      - name: Fazer login no Railway
+        run: railway login --token ${{ secrets.RAILWAY_TOKEN }}
+
+      - name: Fazer deploy para Railway
+        run: railway up
