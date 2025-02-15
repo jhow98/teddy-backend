@@ -3,7 +3,7 @@ name: Deploy no Railway
 on:
   push:
     branches:
-      - develop  # Apenas quando houver merge na develop
+      - develop  # Executa o deploy somente na branch develop
 
 jobs:
   deploy:
@@ -11,8 +11,8 @@ jobs:
     container: ghcr.io/railwayapp/cli:latest  # Usa a imagem oficial do Railway CLI
 
     env:
-      SVC_ID: ${{ secrets.SVC_ID }}  # ID do serviço configurado no GitHub Secrets
-      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      SVC_ID: ${{ secrets.SVC_ID }}         # O ID do serviço configurado no Railway (definido como secret no GitHub)
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}  # O token do Railway (também definido como secret)
 
     steps:
       - name: Checkout do Código
@@ -20,14 +20,7 @@ jobs:
 
       - name: Debug Token
         run: |
-          if [ -z "${{ secrets.RAILWAY_TOKEN }}" ]; then
-            echo "🚨 RAILWAY_TOKEN não foi carregado!"
-            exit 1
-          else
-            echo "✅ RAILWAY_TOKEN está carregado corretamente!"
-          fi
+          echo "Token Length: $(echo -n $RAILWAY_TOKEN | wc -c)"
 
       - name: Fazer deploy para Railway
-        run: |
-          export RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}
-          railway up --service=${{ env.SVC_ID }} --token $RAILWAY_TOKEN
+        run: railway up --service=${{ env.SVC_ID }}
