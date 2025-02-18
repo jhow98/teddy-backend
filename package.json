@@ -9,6 +9,7 @@
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
     "start:dev": "nest start --watch",
     "build": "nest build",
+    "vercel build": "nest build",
     "start:prod": "node dist/main",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -17,7 +18,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "lint": "eslint --fix",
     "lint:fix": "eslint --fix",
-    "bull-board": "ts-node src/bull-board.ts"
+    "bull-board": "ts-node src/bull-board.ts",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "@bull-board/ui": "^6.7.7",
