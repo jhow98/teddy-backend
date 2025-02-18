@@ -41,12 +41,11 @@ async function bootstrap() {
   app.enableCors();
   app.enableShutdownHooks();
 
-  try {
-    await app.listen(3000);
-    Logger.log(`🚀 API rodando em http://localhost:3000`);
-    Logger.log(`📊 Métricas disponíveis em http://localhost:3000/metrics`);
-  } catch (error) {
-    Logger.error('Erro ao iniciar a aplicação:', error);
-  }
+    if (process.env.NOW_REGION) {
+        const server = createServer((req, res) => app.getHttpAdapter().getInstance().handle(req, res));
+        server.listen(3000);
+    } else {
+        await app.listen(3000);
+    }
 }
 bootstrap();
